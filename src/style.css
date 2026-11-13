@@ -41,7 +41,7 @@ body {
   place-content: center;
   gap: var(--gap);
   background: radial-gradient(ellipse at 50% 30%, #1a0f3a, #04020c 70%);
-  color: car(--ice);
+  color: var(--ice);
   font-family: var(--font-mono);
 }
 
@@ -118,10 +118,15 @@ output {
 
 .pip {
   color: #ff5ea8;
+  width: 22px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: currentColor;
 }
 
 .cell {
   color: var(--yellow);
+  flex: 1;
+  border-radius: 2px;
 }
 
 .pip.lit,
@@ -195,6 +200,13 @@ output {
 .stop[data-state="current"] {
   color: var(--yellow);
   text-shadow: var(--glow);
+}
+
+.stop-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
 }
 
 .stop[data-state="current"] .stop-dot {
