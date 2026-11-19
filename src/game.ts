@@ -7,7 +7,12 @@ import {
   Player,
   WIDTH,
 } from "./actors.ts";
-import { ShmupBoss, ShmupPowerUp, ShmupPrefabSprite } from "./prefab.ts";
+import {
+  ENEMY_STATS,
+  ShmupBoss,
+  ShmupPowerUp,
+  ShmupPrefabSprite,
+} from "./prefab.ts";
 import type { Hud } from "./hud.ts";
 import type { LaunchOptions } from "./main.ts";
 import { AutoPilot, KeyboardPilot, type Pilot } from "./pilots.ts";
@@ -15,7 +20,7 @@ import { Rng } from "./rng.ts";
 import { loadSounds, play } from "./sounds.ts";
 import { makeTextures, TINTS } from "./textures.ts";
 import { Backdrop } from "./backdrop.ts";
-import { ENEMY_STATS, SECTORS, type Wave } from "./route.ts";
+import { SECTORS, type Wave } from "./route.ts";
 
 const TICK_MS = 1000 / 60;
 const START_LIVES = 3;
@@ -320,21 +325,9 @@ export class GameScene extends Phaser.Scene implements Arena {
   }
 
   summon(_kind: string, x: number, y: number): void {
+    const side = x < WIDTH / 2 ? 1 : -1;
     this.enemies.push(
-      new ShmupPrefabSprite(
-        this,
-        x,
-        y,
-        "drone",
-        2,
-        100,
-        13,
-        0.015,
-        true,
-        false,
-        x,
-        x < WIDTH / 2 ? 1 : -1,
-      ),
+      new ShmupPrefabSprite(this, "drone", ENEMY_STATS.drone, x, y, side),
     );
   }
 
@@ -450,20 +443,7 @@ export class GameScene extends Phaser.Scene implements Arena {
 
       const side = i % 2 === 0 ? 1 : -1;
       this.enemies.push(
-        new ShmupPrefabSprite(
-          this,
-          x,
-          y,
-          wave.kind,
-          stats.hp,
-          stats.score,
-          stats.radius,
-          stats.dropChance,
-          stats.canShoot,
-          false,
-          x,
-          side,
-        ),
+        new ShmupPrefabSprite(this, wave.kind, stats, x, y, side),
       );
     }
   }
